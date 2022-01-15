@@ -21,7 +21,7 @@ defmodule OLEDVirtual.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:oled, "~> 0.3.4"}
+      {:oled, "~> 0.3.5"}
     ]
   end
 end

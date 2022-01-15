@@ -37,48 +37,56 @@ defmodule OLEDVirtual.Display.Server do
       do: GenServer.call(server, {:display_frame, data, opts})
 
   @doc false
-  def clear(server, pixel_state \\ :off),
-      do: GenServer.call(server, {:clear, pixel_state})
+  def display_raw_frame(server, data, opts \\ []),
+    do: GenServer.call(server, {:display_raw_frame, data, opts})
 
   @doc false
-  def put_pixel(server, x, y, opts \\ []),
-      do: GenServer.call(server, {:put_pixel, x, y, opts})
-
-  @doc false
-  def line(server, x1, y1, x2, y2, opts \\ []),
-      do: GenServer.call(server, {:line, x1, y1, x2, y2, opts})
-
-  @doc false
-  def line_h(server, x, y, width, opts \\ []),
-      do: GenServer.call(server, {:line_h, x, y, width, opts})
-
-  @doc false
-  def line_v(server, x, y, height, opts \\ []),
-      do: GenServer.call(server, {:line_v, x, y, height, opts})
-
-  @doc false
-  def circle(server, x0, y0, r, opts),
-      do: GenServer.call(server, {:circle, x0, y0, r, opts})
-
-  @doc false
-  def rect(server, x, y, width, height, opts),
-      do: GenServer.call(server, {:rect, x, y, width, height, opts})
-
-  @doc false
-  def fill_rect(server, x, y, width, height, opts),
-      do: GenServer.call(server, {:fill_rect, x, y, width, height, opts})
-
-  @doc false
-  def get_dimensions(server),
-      do: GenServer.call(server, :get_dimensions)
+  def put_buffer(server, data),
+    do: GenServer.call(server, {:put_buffer, data})
 
   @doc false
   def get_buffer(server),
-      do: GenServer.call(server, :get_buffer)
+    do: GenServer.call(server, :get_buffer)
+
+  @doc false
+  def clear(server, pixel_state \\ :off),
+    do: GenServer.call(server, {:clear, pixel_state})
+
+  @doc false
+  def put_pixel(server, x, y, opts \\ []),
+    do: GenServer.call(server, {:put_pixel, x, y, opts})
+
+  @doc false
+  def line(server, x1, y1, x2, y2, opts \\ []),
+    do: GenServer.call(server, {:line, x1, y1, x2, y2, opts})
+
+  @doc false
+  def line_h(server, x, y, width, opts \\ []),
+    do: GenServer.call(server, {:line_h, x, y, width, opts})
+
+  @doc false
+  def line_v(server, x, y, height, opts \\ []),
+    do: GenServer.call(server, {:line_v, x, y, height, opts})
+
+  @doc false
+  def circle(server, x0, y0, r, opts),
+    do: GenServer.call(server, {:circle, x0, y0, r, opts})
+
+  @doc false
+  def rect(server, x, y, width, height, opts),
+    do: GenServer.call(server, {:rect, x, y, width, height, opts})
+
+  @doc false
+  def fill_rect(server, x, y, width, height, opts),
+    do: GenServer.call(server, {:fill_rect, x, y, width, height, opts})
+
+  @doc false
+  def get_dimensions(server),
+    do: GenServer.call(server, :get_dimensions)
 
   @doc false
   def get_frame(server),
-      do: GenServer.call(server, :get_frame)
+    do: GenServer.call(server, :get_frame)
 
   @doc false
   def handle_call(:display, _from, %{buffer: buffer} = state) do
@@ -98,10 +106,26 @@ defmodule OLEDVirtual.Display.Server do
     end
   end
 
+  @doc false
+  def handle_call({:display_raw_frame, _data, _opts}, _from, state) do
+    # Not supported
+    {:reply, :ok, state}
+  end
+
   def handle_call({:clear, pixel_state}, _from, state) do
     buffer = get_clear_buffer(state, pixel_state)
 
     {:reply, :ok, %{state | buffer: buffer}, {:continue, :notifiy_buffer_update}}
+  end
+
+  def handle_call({:put_buffer, data}, _from, state) do
+    state = %{state | buffer: data}
+
+    {:reply, :ok, state}
+  end
+
+  def handle_call(:get_buffer, _from, %{buffer: buffer} = state) do
+    {:reply, {:ok, buffer}, state}
   end
 
   def handle_call({:put_pixel, x, y, opts}, _from, state) do
@@ -148,10 +172,6 @@ defmodule OLEDVirtual.Display.Server do
 
   def handle_call(:get_dimensions, _from, %{width: w, height: h} = state) do
     {:reply, {:ok, w, h}, state}
-  end
-
-  def handle_call(:get_buffer, _from, %{buffer: buffer} = state) do
-    {:reply, {:ok, buffer}, state}
   end
 
   def handle_call(:get_frame, _from, %{frame: frame} = state) do

@@ -66,11 +66,20 @@ defmodule OLEDVirtual.Display do
       def display_frame(data, opts \\ []),
         do: Server.display_frame(@me, data, opts)
 
+      def display_raw_frame(data, opts \\ []),
+        do: Server.display_raw_frame(@me, data, opts)
+
       def clear(),
         do: Server.clear(@me)
 
       def clear(pixel_state),
         do: Server.clear(@me, pixel_state)
+
+      def put_buffer(data),
+        do: Server.put_buffer(@me, data)
+
+      def get_buffer(),
+        do: Server.get_buffer(@me)
 
       def put_pixel(x, y, opts \\ []),
         do: Server.put_pixel(@me, x, y, opts)
@@ -95,9 +104,6 @@ defmodule OLEDVirtual.Display do
 
       def get_dimensions(),
         do: Server.get_dimensions(@me)
-
-      def get_buffer(),
-        do: Server.get_buffer(@me)
 
       def get_frame(),
         do: Server.get_frame(@me)
