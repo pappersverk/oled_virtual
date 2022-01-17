@@ -37,7 +37,7 @@ defmodule OLEDVirtual.Display do
       @behaviour OLED.Display
 
       def module_config(),
-          do: Application.get_env(@app, @me, [])
+        do: Application.get_env(@app, @me, [])
 
       def start_link(config \\ []) do
         module_config()
