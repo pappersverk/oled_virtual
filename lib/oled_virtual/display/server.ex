@@ -24,17 +24,18 @@ defmodule OLEDVirtual.Display.Server do
 
         {:ok, state}
 
-      {:error, error} -> {:stop, error}
+      {:error, error} ->
+        {:stop, error}
     end
   end
 
   @doc false
   def display(server),
-      do: GenServer.call(server, :display)
+    do: GenServer.call(server, :display)
 
   @doc false
   def display_frame(server, data, opts \\ []),
-      do: GenServer.call(server, {:display_frame, data, opts})
+    do: GenServer.call(server, {:display_frame, data, opts})
 
   @doc false
   def display_raw_frame(server, data, opts \\ []),
@@ -192,6 +193,7 @@ defmodule OLEDVirtual.Display.Server do
 
     {:noreply, state}
   end
+
   def handle_continue(:notifiy_display, state), do: {:noreply, state}
 
   def handle_continue(:notifiy_buffer_update, %{on_buffer_update: callback} = state) do
@@ -208,9 +210,11 @@ defmodule OLEDVirtual.Display.Server do
 
     {:noreply, state}
   end
+
   def handle_continue(:notifiy_buffer_update, state), do: {:noreply, state}
 
-  def get_clear_buffer(%{width: width, height: height}, pixel_state) when pixel_state in [:on, :off] do
+  def get_clear_buffer(%{width: width, height: height}, pixel_state)
+      when pixel_state in [:on, :off] do
     value =
       case pixel_state do
         :off -> <<0::8>>

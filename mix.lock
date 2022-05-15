@@ -1,0 +1,8 @@
+%{
+  "circuits_gpio": {:hex, :circuits_gpio, "0.4.8", "75a62b07131f119c0ffa1dd49f79fbe29c46fd39b20ef0acc036d449fb780b89", [:make, :mix], [{:elixir_make, "~> 0.6", [hex: :elixir_make, repo: "hexpm", optional: false]}], "hexpm", "05e341a5de7e9181a0ee6b3281bd2dc278ae4651825e95c9e83c9eabc421448e"},
+  "circuits_i2c": {:hex, :circuits_i2c, "0.3.9", "746a599ac06f8d31572143a8c51e1bc787246c173669940dc23e078907fb13e1", [:make, :mix], [{:elixir_make, "~> 0.6", [hex: :elixir_make, repo: "hexpm", optional: false]}], "hexpm", "c6d75387637a4fbae77cf37af45000fe23763eb8104cc50e7aae532bec46e91d"},
+  "circuits_spi": {:hex, :circuits_spi, "0.1.6", "30cefc0169fccb9204ac500c6614409d20a4b1fd06124772e1155bf7b05148f1", [:make, :mix], [{:elixir_make, "~> 0.6", [hex: :elixir_make, repo: "hexpm", optional: false]}], "hexpm", "0d185813e15c9dd1aa04f63647fa95748979e0e1589f2672f7cdff44b696ff14"},
+  "elixir_make": {:hex, :elixir_make, "0.6.3", "bc07d53221216838d79e03a8019d0839786703129599e9619f4ab74c8c096eac", [:mix], [], "hexpm", "f5cbd651c5678bcaabdbb7857658ee106b12509cd976c2c2fca99688e1daf716"},
+  "oled": {:hex, :oled, "0.3.5", "8b4d40ebe4f1e7d1f1d9672328aabd11aae9e5ca1e178638510be13eb7c911a5", [:mix], [{:circuits_gpio, "~> 0.1", [hex: :circuits_gpio, repo: "hexpm", optional: false]}, {:circuits_i2c, "~> 0.1", [hex: :circuits_i2c, repo: "hexpm", optional: false]}, {:circuits_spi, "~> 0.1", [hex: :circuits_spi, repo: "hexpm", optional: false]}], "hexpm", "ec07bdc1481c4a71e8c0b0c3c0634437e86772fd17132860a85fdd8569557b87"},
+  "telemetry": {:hex, :telemetry, "1.1.0", "a589817034a27eab11144ad24d5c0f9fab1f58173274b1e9bae7074af9cbee51", [:rebar3], [], "hexpm", "b727b2a1f75614774cff2d7565b64d0dfa5bd52ba517f16543e6fc7efcc0df48"},
+}

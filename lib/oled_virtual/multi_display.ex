@@ -6,13 +6,14 @@ defmodule OLEDVirtual.MultiDisplay do
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts, moduledoc: @moduledoc] do
       @moduledoc moduledoc
-                 |> String.replace(~r/MyApp\.MyMultiDisplay/, Enum.join(Module.split(__MODULE__), "."))
+                 |> String.replace(
+                   ~r/MyApp\.MyMultiDisplay/,
+                   Enum.join(Module.split(__MODULE__), ".")
+                 )
                  |> String.replace(~r/:my_app/, ":#{Atom.to_string(Keyword.fetch!(opts, :app))}")
 
       @app Keyword.fetch!(opts, :app)
       @me __MODULE__
-
-#      import OLEDVirtual.MultiDisplay, only: []
 
       def module_config(),
         do: Application.get_env(@app, @me, [])
@@ -83,12 +84,12 @@ defmodule OLEDVirtual.MultiDisplay do
         displays
         |> Enum.map(fn display ->
           Task.async(fn ->
-            start_time = :erlang.monotonic_time();
+            start_time = :erlang.monotonic_time()
 
             result = apply(display, function, opts)
 
-            end_time = :erlang.monotonic_time();
-            duration = ((end_time - start_time) / 1_000_000)
+            end_time = :erlang.monotonic_time()
+            duration = (end_time - start_time) / 1_000_000
 
             Task.start(fn ->
               :telemetry.execute(

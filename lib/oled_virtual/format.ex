@@ -17,9 +17,9 @@ defmodule OLEDVirtual.Format do
     extract_bits(data, [])
   end
 
-  defp extract_bits(<<b :: size(1), bits :: bitstring>>, acc) when is_bitstring(bits) do
+  defp extract_bits(<<b::size(1), bits::bitstring>>, acc) when is_bitstring(bits) do
     extract_bits(bits, [b | acc])
   end
 
-  defp extract_bits(<<>>, acc), do: acc |> Enum.reverse
+  defp extract_bits(<<>>, acc), do: acc |> Enum.reverse()
 end
