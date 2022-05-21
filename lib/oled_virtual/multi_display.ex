@@ -1,6 +1,51 @@
 defmodule OLEDVirtual.MultiDisplay do
   @moduledoc """
+  Multi display to invoke several displays simultaneously.
 
+  It supports the same functions as `OLEDVirtual.Display` and `OLED.Display`.
+  The only difference is that the functions always return a list of `{display, result}` tuples,
+  where `display` is the display module like `MyApp.MyDisplay` and `result` is the function result.
+
+  The display functions are invoked simultaneously using `Task.async/1`, so they do not block each other.
+
+  When used, the multi display expects an `:app` as option.
+  The `:app` should be the app that has the configuration.
+
+  ## Example
+
+      defmodule MyApp.MyMultiDisplay do
+        use OLEDVirtual.MultiDisplay, app: :my_app
+      end
+
+  Could be configured with:
+      config :my_app, MyApp.MyMultiDisplay,
+        displays: [
+          MyApp.OledVirtual,
+          MyAppFirmware.Oled,
+        ]
+
+  And then used like this:
+      MyApp.MyMultiDisplay.rect(0, 0, 127, 63)
+      MyApp.MyMultiDisplay.display()
+
+  See `OLED.Display` for all draw and display functions.
+
+  ## Telemetry Events
+
+  Each function call on each display emits a telemetry event.
+
+    - `[:oled_virtual, :multi_display, <function_name>]`
+
+  Where `<function_name>` is the invoked function name as an atom, e.g. `:display`
+
+  The event contains the following measurements:
+
+    - `:duration` - The duration of the function call in milliseconds
+
+  The event contains the following metadata:
+
+    - `:display` - The display module
+    - `:multi_display` - The multi display module
   """
 
   defmacro __using__(opts) do

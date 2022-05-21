@@ -1,7 +1,5 @@
 defmodule OLEDVirtual.Display.Server do
-  @moduledoc """
-  Virtual display server
-  """
+  @moduledoc false
 
   alias OLEDVirtual.Config
   alias OLED.Display.Impl.SSD1306.Draw
@@ -89,14 +87,12 @@ defmodule OLEDVirtual.Display.Server do
   def get_frame(server),
     do: GenServer.call(server, :get_frame)
 
-  @doc false
   def handle_call(:display, _from, %{buffer: buffer} = state) do
     state = %{state | frame: buffer}
 
     {:reply, :ok, state, {:continue, :notifiy_display}}
   end
 
-  @doc false
   def handle_call({:display_frame, data, _opts}, _from, state) do
     if byte_size(data) == state.width * state.height / 8 do
       state = %{state | frame: data}
@@ -107,7 +103,6 @@ defmodule OLEDVirtual.Display.Server do
     end
   end
 
-  @doc false
   def handle_call({:display_raw_frame, _data, _opts}, _from, state) do
     # Not supported
     {:reply, :ok, state}

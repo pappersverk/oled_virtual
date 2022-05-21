@@ -1,26 +1,62 @@
 defmodule OLEDVirtual.Display do
   @moduledoc """
-  Defines a display module
+  Virtual oled display.
 
   When used, the display expects an `:app` as option.
   The `:app` should be the app that has the configuration.
 
-  Example:
+  ## Example
 
       defmodule MyApp.MyDisplay do
         use OLEDVirtual.Display, app: :my_app
       end
 
   Could be configured with:
+
       config :my_app, MyApp.MyDisplay,
         width: 128,
         height: 64
 
-  ## Configuration:
+  It needs to be added to the supervision tree:
 
-    * `:width` - Display width
+      defmodule MyApp.Application do
+        use Application
 
-    * `:height` - Display height
+        @impl true
+        def start(_type, _args) do
+          children = [
+            ...
+            MyApp.MyDisplay
+          ]
+
+          opts = [strategy: :one_for_one, name: MyApp.Supervisor]
+          Supervisor.start_link(children, opts)
+        end
+      end
+
+  And then used like this:
+
+      MyApp.MyDisplay.rect(0, 0, 127, 63)
+      MyApp.MyDisplay.display()
+
+  See `OLED.Display` for all draw and display functions.
+
+  ## Callbacks
+
+  The virtual display module supports optional callbacks to get notified about buffer or frame changes.
+  They can be used to further process the frame, e.g. broadcasting it via `Phoenix.PubSub`.
+
+      defmodule MyApp.MyDisplay do
+        use OLEDVirtual.Display, app: :my_app
+
+        def on_display(data, dimensions) do
+          # Called after MyApp.MyDisplay.display/0 and MyApp.MyDisplay.display_frame/2
+        end
+
+        def on_buffer_update(data, dimensions) do
+          # Called after any changes to the buffer of the next frame
+        end
+      end
   """
 
   alias OLEDVirtual.Display.Server
@@ -29,12 +65,14 @@ defmodule OLEDVirtual.Display do
     quote bind_quoted: [opts: opts, moduledoc: @moduledoc] do
       @moduledoc moduledoc
                  |> String.replace(~r/MyApp\.MyDisplay/, Enum.join(Module.split(__MODULE__), "."))
+                 |> String.replace(~r/MyApp/, Enum.at(Module.split(__MODULE__), 0))
                  |> String.replace(~r/:my_app/, ":#{Atom.to_string(Keyword.fetch!(opts, :app))}")
 
       @app Keyword.fetch!(opts, :app)
       @me __MODULE__
 
       @behaviour OLED.Display
+      @behaviour OLEDVirtual.Display
 
       def module_config(),
         do: Application.get_env(@app, @me, [])
@@ -119,4 +157,18 @@ defmodule OLEDVirtual.Display do
       defoverridable child_spec: 1, on_display: 2, on_buffer_update: 2
     end
   end
+
+  @doc """
+  Called after `display/0` and `display_frame/2` got invoked.
+  """
+  @callback on_display(data :: binary(), dimensions :: %{width: integer(), height: integer()}) ::
+              any()
+
+  @doc """
+  Called after any changes to the buffer of the next frame
+  """
+  @callback on_buffer_update(
+              data :: binary(),
+              dimensions :: %{width: integer(), height: integer()}
+            ) :: any()
 end

@@ -1,7 +1,5 @@
 defmodule OLEDVirtual.Config do
-  @moduledoc """
-
-  """
+  @moduledoc false
 
   def validate(config) when is_list(config) do
     case Keyword.keyword?(config) do
