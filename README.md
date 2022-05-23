@@ -7,6 +7,8 @@ by fully virtualizing the oled display.
 
 It also comes with a `MultiDisplay` module to use both hardware and virtual display at the same time.
 
+![Demo: Showing the virtual LiveView powered version on the web interface and the real screen on the device](guides/images/demo.png)
+
 ## Installation
 
 The package can be installed
