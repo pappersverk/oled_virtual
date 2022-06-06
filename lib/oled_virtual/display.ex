@@ -143,6 +143,7 @@ defmodule OLEDVirtual.Display do
       def get_dimensions(),
         do: Server.get_dimensions(@me)
 
+      @spec get_frame() :: {:ok, binary()}
       def get_frame(),
         do: Server.get_frame(@me)
 

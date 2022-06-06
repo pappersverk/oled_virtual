@@ -63,62 +63,116 @@ defmodule OLEDVirtual.MultiDisplay do
       def module_config(),
         do: Application.get_env(@app, @me, [])
 
+      @spec display() :: [{module(), :ok}]
       def display() do
         execute(:display, [])
       end
 
+      @spec display_frame(data :: binary(), opts :: OLED.Display.Server.display_frame_opts()) :: [
+              {module(), :ok}
+            ]
       def display_frame(data, opts \\ []) do
         execute(:display_frame, [data, opts])
       end
 
+      @spec display_raw_frame(data :: binary(), opts :: OLED.Display.Server.display_frame_opts()) ::
+              [{module(), :ok}]
       def display_raw_frame(data, opts \\ []) do
         execute(:display_raw_frame, [data, opts])
       end
 
+      @spec clear() :: [{module(), :ok}]
       def clear() do
         execute(:clear, [])
       end
 
+      @spec clear(pixel_state :: OLED.Display.Server.pixel_state()) :: [{module(), :ok}]
       def clear(pixelstate) do
         execute(:clear, [pixelstate])
       end
 
+      @spec put_buffer(data :: binary()) :: [{module(), :ok | {:error, term()}}]
       def put_buffer(data) do
         execute(:put_buffer, [data])
       end
 
+      @spec get_buffer() :: [{module(), {:ok, binary()}}]
       def get_buffer() do
         execute(:get_buffer, [])
       end
 
+      @spec put_pixel(x :: integer(), y :: integer(), opts :: OLED.Display.Server.pixel_opts()) ::
+              [{module(), :ok}]
       def put_pixel(x, y, opts \\ []) do
         execute(:put_pixel, [x, y, opts])
       end
 
+      @spec line(
+              x1 :: integer(),
+              y1 :: integer(),
+              x2 :: integer(),
+              y2 :: integer(),
+              opts :: OLED.Display.Server.pixel_opts()
+            ) :: [{module(), :ok}]
       def line(x1, y1, x2, y2, opts \\ []) do
         execute(:line, [x1, y1, x2, y2, opts])
       end
 
+      @spec line_h(
+              x :: integer(),
+              y :: integer(),
+              width :: integer(),
+              opts :: OLED.Display.Server.pixel_opts()
+            ) :: [{module(), :ok}]
       def line_h(x, y, width, opts \\ []) do
         execute(:line_h, [x, y, width, opts])
       end
 
+      @spec line_v(
+              x :: integer(),
+              y :: integer(),
+              height :: integer(),
+              opts :: OLED.Display.Server.pixel_opts()
+            ) :: [{module(), :ok}]
       def line_v(x, y, height, opts \\ []) do
         execute(:line_v, [x, y, height, opts])
       end
 
+      @spec rect(
+              x :: integer(),
+              y :: integer(),
+              width :: integer(),
+              height :: integer(),
+              opts :: OLED.Display.Server.pixel_opts()
+            ) :: [{module(), :ok}]
       def rect(x, y, width, height, opts \\ []) do
         execute(:rect, [x, y, width, height, opts])
       end
 
+      @spec circle(
+              x0 :: integer(),
+              y0 :: integer(),
+              r :: integer(),
+              opts :: OLED.Display.Server.pixel_opts()
+            ) :: [{module(), :ok}]
       def circle(x0, y0, r, opts \\ []) do
         execute(:circle, [x0, y0, r, opts])
       end
 
+      @spec fill_rect(
+              x :: integer(),
+              y :: integer(),
+              width :: integer(),
+              height :: integer(),
+              opts :: OLED.Display.Server.pixel_opts()
+            ) :: [{module(), :ok}]
       def fill_rect(x, y, width, height, opts \\ []) do
         execute(:fill_rect, [x, y, width, height, opts])
       end
 
+      @spec get_dimensions() :: [
+              {module(), {:ok, width :: integer(), height :: integer()} | {:error, term()}}
+            ]
       def get_dimensions() do
         execute(:get_dimensions, [])
       end

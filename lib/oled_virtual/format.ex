@@ -12,6 +12,7 @@ defmodule OLEDVirtual.Format do
 
       pixel_matrix = OLEDVirtual.Format.as_matrix(frame, width)
   """
+  @spec as_matrix(data :: binary(), width :: pos_integer()) :: [list(0 | 1)]
   def as_matrix(data, width) when is_binary(data) and is_number(width) do
     data
     |> extract_bits()
@@ -26,6 +27,7 @@ defmodule OLEDVirtual.Format do
 
       bits = OLEDVirtual.Format.as_bits(frame)
   """
+  @spec as_bits(data :: binary()) :: [0 | 1]
   def as_bits(data) when is_binary(data) do
     data |> extract_bits()
   end
