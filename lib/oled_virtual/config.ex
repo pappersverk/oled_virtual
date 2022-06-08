@@ -9,7 +9,7 @@ defmodule OLEDVirtual.Config do
   end
 
   def validate(config) when is_map(config) do
-    keys = [:width, :height, :on_display]
+    keys = [:width, :height, :on_display, :on_buffer_update]
 
     Enum.reduce(keys, :ok, fn key, acc ->
       case acc do

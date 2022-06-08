@@ -117,7 +117,7 @@ defmodule OLEDVirtual.Display.Server do
   def handle_call({:put_buffer, data}, _from, state) do
     state = %{state | buffer: data}
 
-    {:reply, :ok, state}
+    {:reply, :ok, state, {:continue, :notifiy_buffer_update}}
   end
 
   def handle_call(:get_buffer, _from, %{buffer: buffer} = state) do
