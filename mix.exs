@@ -1,18 +1,22 @@
 defmodule OLEDVirtual.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "1.0.0"
 
   def project do
     [
       app: :oled_virtual,
       version: @version,
+      name: "OLEDVirtual",
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      description: description(),
       docs: docs(),
-      source_url: "https://github.com/pappersverk/oled_virtual"
+      package: package(),
+      source_url: "https://github.com/pappersverk/oled_virtual",
+      homepage_url: "https://github.com/pappersverk/oled_virtual"
     ]
   end
 
@@ -21,6 +25,12 @@ defmodule OLEDVirtual.MixProject do
     [
       extra_applications: [:logger]
     ]
+  end
+
+  defp description do
+    """
+    OLEDVirtual is a library to mock the OLED (`oled` library) screen for local development.
+    """
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
@@ -36,9 +46,17 @@ defmodule OLEDVirtual.MixProject do
     ]
   end
 
+  defp package do
+    %{
+      maintainers: ["Phillipp Ohlandt"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/pappersverk/oled_virtual"}
+    }
+  end
+
   defp docs do
     [
-      main: "OledVirtual",
+      main: "OLEDVirtual",
       source_ref: @version,
       source_url: "https://github.com/pappersverk/oled_virtual",
       extra_section: "GUIDES",

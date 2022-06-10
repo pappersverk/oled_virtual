@@ -17,7 +17,7 @@ by adding `oled_virtual` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:oled_virtual, "~> 0.1.0"}
+    {:oled_virtual, "~> 1.0"}
   ]
 end
 ```
